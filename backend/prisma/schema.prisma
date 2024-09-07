@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int     @id @default(autoincrement())
+  address       String  @unique
+  spaces        Space[] @relation("UserSpaces")
+  votes         Vote[]
+  createdSpaces Space[] @relation("SpaceCreator")
+}
+
+model Space {
+  id        Int         @id @default(autoincrement())
+  name      String
+  creator   User        @relation("SpaceCreator", fields: [creatorId], references: [id])
+  creatorId Int         @unique
+  link      String      @unique
+  status    SpaceStatus @default(LIVE)
+  users     User[]      @relation("UserSpaces")
+  votes     Vote[]
+  imageUrl  String?
+}
+
+model Vote {
+  id       Int      @id @default(autoincrement())
+  user     User     @relation(fields: [userId], references: [id])
+  space    Space    @relation(fields: [spaceId], references: [id])
+  userId   Int
+  spaceId  Int
+  songUrl  String
+  voteType VoteType
+}
+
+enum VoteType {
+  UPVOTE
+  DOWNVOTE
+}
+
+enum SpaceStatus {
+  LIVE
+  ENDED
+}
