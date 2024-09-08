@@ -12,26 +12,38 @@ import { useRouter } from "next/navigation";
 export function HomeComponent() {
   const { publicKey, signMessage } = useWallet();
   const router = useRouter();
-  async function signNsend() {
-    if (!publicKey) {
-      return;
+
+  const signNsend = async () => {
+    if (publicKey && signMessage) {
+      try {
+        const message = new TextEncoder().encode(
+          "Welcome to SolTune! Connect your wallet to join the beat of music."
+        );
+
+        const signature = await signMessage(message);
+        const signatureBase64 = Buffer.from(signature).toString("base64");
+        const messageBase64 = Buffer.from(message).toString("base64");
+
+        const response = await axios.post(`${BACKEND_URL}/signin`, {
+          signature: signatureBase64,
+          publicKey: publicKey.toString(),
+          message: messageBase64,
+        });
+
+        if (response.status === 200) {
+          localStorage.setItem("token", response.data.token);
+          router.push("/landing");
+        }
+      } catch (error) {
+        console.error("Error signing or sending the message", error);
+      }
     }
-    const message = new TextEncoder().encode(
-      "Welcome to SolTune! Connect your wallet to join the beat of music."
-    );
-    const signature = await signMessage?.(message);
-    const response = await axios.post(`${BACKEND_URL}/signin`, {
-      signature,
-      publicKey: publicKey?.toString(),
-    });
-    if (response.status === 200) {
-      localStorage.setItem("token", response.data.token);
-      router.push("/landing");
-    }
-  }
+  };
+
   useEffect(() => {
     signNsend();
   }, [publicKey]);
+
   return (
     <div>
       <BackgroundBeamsWithCollision>

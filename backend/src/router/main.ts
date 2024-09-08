@@ -9,18 +9,19 @@ const prisma = new PrismaClient();
 dotenv.config();
 
 router.post("/signin", async (req, res) => {
-  const { signature, publicKey } = req.body;
+  const { signature, publicKey, message } = req.body;
   if (!signature || !publicKey) {
     return res.status(401).json({ message: "Invalid inputs" });
   }
-  const message = new TextEncoder().encode(
-    "Welcome to SolTune! Connect your wallet to join the beat of music."
-  );
+  const signatureUint8Array = Uint8Array.from(Buffer.from(signature, "base64"));
+  const publicKeyUint8Array = new PublicKey(publicKey).toBytes();
+  const messageUint8Array = Uint8Array.from(Buffer.from(message, "base64"));
   const result = nacl.sign.detached.verify(
-    message,
-    new Uint8Array(signature.data),
-    new PublicKey(publicKey).toBytes()
+    messageUint8Array,
+    signatureUint8Array,
+    publicKeyUint8Array
   );
+
   if (!result) {
     return res.status(401).json({ message: "Invalid signature" });
   }

@@ -22,12 +22,14 @@ const router = (0, express_1.Router)();
 const prisma = new client_1.PrismaClient();
 dotenv_1.default.config();
 router.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { signature, publicKey } = req.body;
+    const { signature, publicKey, message } = req.body;
     if (!signature || !publicKey) {
         return res.status(401).json({ message: "Invalid inputs" });
     }
-    const message = new TextEncoder().encode("Welcome to SolTune! Connect your wallet to join the beat of music.");
-    const result = tweetnacl_1.default.sign.detached.verify(message, new Uint8Array(signature.data), new web3_js_1.PublicKey(publicKey).toBytes());
+    const signatureUint8Array = Uint8Array.from(Buffer.from(signature, "base64"));
+    const publicKeyUint8Array = new web3_js_1.PublicKey(publicKey).toBytes();
+    const messageUint8Array = Uint8Array.from(Buffer.from(message, "base64"));
+    const result = tweetnacl_1.default.sign.detached.verify(messageUint8Array, signatureUint8Array, publicKeyUint8Array);
     if (!result) {
         return res.status(401).json({ message: "Invalid signature" });
     }
