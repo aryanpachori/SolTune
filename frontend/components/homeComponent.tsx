@@ -6,19 +6,32 @@ import {
   WalletDisconnectButton,
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
+import axios from "axios";
+import { BACKEND_URL } from "@/lib/config";
+import { useRouter } from "next/navigation";
 export function HomeComponent() {
   const { publicKey, signMessage } = useWallet();
+  const router = useRouter();
   async function signNsend() {
-    if(!publicKey){
-      return
+    if (!publicKey) {
+      return;
     }
-    const message = new TextEncoder().encode("Welcome to SolTune! Connect your wallet to join the beat of music.")
+    const message = new TextEncoder().encode(
+      "Welcome to SolTune! Connect your wallet to join the beat of music."
+    );
     const signature = await signMessage?.(message);
-
+    const response = await axios.post(`${BACKEND_URL}/signin`, {
+      signature,
+      publicKey: publicKey?.toString(),
+    });
+    if (response.status === 200) {
+      localStorage.setItem("token", response.data.token);
+      router.push("/landing");
+    }
   }
-  useEffect(()=>{
+  useEffect(() => {
     signNsend();
-  },[publicKey])
+  }, [publicKey]);
   return (
     <div>
       <BackgroundBeamsWithCollision>
