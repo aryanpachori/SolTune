@@ -1,9 +1,16 @@
+"use client"
+import CreateSpaceDialog from "@/components/createSpaceDialog";
 import { BackgroundLines } from "@/components/ui/background-lines";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PlusCircleIcon, UsersIcon, TrendingUpIcon, Sparkles } from "lucide-react";
+import { useState } from "react";
 
 export default function Landing() {
+   
+  const [isDialogOpen,setIsDialogOpen] = useState(false);
+  const openDialog = () => setIsDialogOpen(true);
+  const closeDialog = () => setIsDialogOpen(false);
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-black text-white overflow-hidden">
       <BackgroundLines className="flex items-center justify-center w-full flex-col px-4 py-12 relative bg-black">
@@ -52,7 +59,8 @@ export default function Landing() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="flex justify-center relative z-10">
-                <Button className="bg-white text-pink-600 hover:bg-pink-100 transition-all duration-300 ease-in-out transform hover:scale-105 px-8 py-3 text-lg rounded-full shadow-lg">
+                <Button onClick={openDialog}
+                 className="bg-white text-pink-600 hover:bg-pink-100 transition-all duration-300 ease-in-out transform hover:scale-105 px-8 py-3 text-lg rounded-full shadow-lg">
                   <PlusCircleIcon className="mr-2 h-6 w-6" /> Create Space
                 </Button>
               </CardContent>
@@ -85,6 +93,7 @@ export default function Landing() {
           </Card>
         </div>
       </BackgroundLines>
+      {isDialogOpen && <CreateSpaceDialog open={isDialogOpen} onClose={closeDialog} />}
     </div>
   );
 }

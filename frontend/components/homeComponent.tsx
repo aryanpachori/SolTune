@@ -24,7 +24,7 @@ export function HomeComponent() {
         const signatureBase64 = Buffer.from(signature).toString("base64");
         const messageBase64 = Buffer.from(message).toString("base64");
 
-        const response = await axios.post(`${BACKEND_URL}/signin`, {
+        const response = await axios.post(`${BACKEND_URL}/main/signin`, {
           signature: signatureBase64,
           publicKey: publicKey.toString(),
           message: messageBase64,

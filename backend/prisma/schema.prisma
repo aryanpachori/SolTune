@@ -14,31 +14,31 @@ datasource db {
 }
 
 model User {
-  id            Int     @id @default(autoincrement())
-  address       String  @unique
-  spaces        Space[] @relation("UserSpaces")
-  votes         Vote[]
-  createdSpaces Space[] @relation("SpaceCreator")
+  id             String  @id @default(uuid())
+  address        String  @unique
+  spaces         Space[] @relation("UserSpaces")
+  votes          Vote[]
+  createdSpaces  Space[] @relation("SpaceCreator")
+  createdSpaceId String? @unique
 }
 
 model Space {
-  id        Int         @id @default(autoincrement())
+  id        String      @id @default(uuid())
   name      String
+  creatorId String      @unique
   creator   User        @relation("SpaceCreator", fields: [creatorId], references: [id])
-  creatorId Int         @unique
-  link      String      @unique
   status    SpaceStatus @default(LIVE)
   users     User[]      @relation("UserSpaces")
   votes     Vote[]
-  imageUrl  String?
+  amount    Int
 }
 
 model Vote {
   id       Int      @id @default(autoincrement())
   user     User     @relation(fields: [userId], references: [id])
   space    Space    @relation(fields: [spaceId], references: [id])
-  userId   Int
-  spaceId  Int
+  userId   String
+  spaceId  String
   songUrl  String
   voteType VoteType
 }

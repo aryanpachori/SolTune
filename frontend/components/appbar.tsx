@@ -15,7 +15,7 @@ export default function AppBar() {
     <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-6 bg-opacity-30 bg-gray-900 backdrop-blur-md">
       <div className="flex items-center space-x-2">
         <MusicIcon className="h-10 w-10 text-purple-400" />
-        <span className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 text-transparent bg-clip-text font-mono">
+        <span className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 text-transparent bg-clip-text font-sans ">
           SolTune
         </span>
       </div>
