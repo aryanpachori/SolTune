@@ -1,4 +1,6 @@
-![Logo](https://raw.githubusercontent.com/aryanpachori/SolTune/main/frontend/app/logo.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/aryanpachori/SolTune/main/frontend/app/logo.png" alt="Logo" />
+</p>
 
 SolTune: Where Music Meets the Cosmos 🎶🚀<br/>
 
