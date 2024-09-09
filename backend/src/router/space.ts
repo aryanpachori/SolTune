@@ -23,7 +23,7 @@ router.post("/create", middleware, async (req, res) => {
         name: name,
       },
     });
-    const joinLink = `http://localhost:3001/spaces/${newSpace.id}`;
+    const joinLink = `http://localhost:3001/space/${newSpace.id}`;
 
     res.status(201).json({ space: newSpace, joinLink });
   } catch (e) {

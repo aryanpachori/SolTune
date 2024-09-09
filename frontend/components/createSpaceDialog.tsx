@@ -38,15 +38,14 @@ export default function CreateSpaceDialog({
         {
           headers: {
             Authorization: localStorage.getItem("token"),
-            
           },
         }
-        
       );
-      
+
       if (response.status >= 200 && response.status < 300) {
-        const { spaceId } = response.data;
-        router.push(`/space/${spaceId}`);
+        const { space } = response.data;
+        console.log("Space created:", space);
+        router.push(`/space/${space.id}`);
       } else if (response.status >= 400 && response.status < 500) {
         console.error("Client error:", response.data);
       } else if (response.status >= 500 && response.status < 600) {

@@ -19,7 +19,6 @@ router.post("/create", middleware_1.middleware, (req, res) => __awaiter(void 0, 
     const userId = req.userId;
     console.log(userId);
     const { name, amount } = req.body;
-    // Validate inputs
     if (!name || !amount) {
         return res.status(400).json({ message: "Invalid inputs" });
     }
@@ -31,7 +30,7 @@ router.post("/create", middleware_1.middleware, (req, res) => __awaiter(void 0, 
                 name: name,
             },
         });
-        const joinLink = `http://localhost:3001/spaces/${newSpace.id}`;
+        const joinLink = `http://localhost:3001/space/${newSpace.id}`;
         res.status(201).json({ space: newSpace, joinLink });
     }
     catch (e) {
