@@ -1,3 +1,5 @@
+![Logo](https://raw.githubusercontent.com/aryanpachori/SolTune/main/frontend/app/logo.png)
+
 SolTune: Where Music Meets the Cosmos 🎶🚀<br/>
 
 Welcome to SolTune—the app that’s out of this world! Here, you can create and join spaces, jam to your favorite tunes, and vote like a cosmic DJ. 🌌✨<br/>
